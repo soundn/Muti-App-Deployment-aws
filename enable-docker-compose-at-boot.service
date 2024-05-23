@@ -1,0 +1,19 @@
+[Unit]
+Description=Your Docker Compose Services
+Requires=docker.service
+Requires=nginx.service
+After=docker.service
+After=nginx.service
+
+[Service]
+WorkingDirectory=/home/ubuntu/primhex-super-admin
+ExecStart=/usr/local/bin/docker-compose up
+ExecStop=/usr/local/bin/docker-compose down
+TimeoutStartSec=0
+Restart=on-failure
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Install]
+WantedBy=multi-user.target
+ubuntu@primhexdomain:~/primhex-super-admin$ 
