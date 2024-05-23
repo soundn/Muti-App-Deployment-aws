@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  backend:
+    depends_on:
+      database:
+          condition: service_healthy
+    container_name: laravel-container
+    build: .
+    ports:
+      - "8080:80"  
+
+  database:
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
+    container_name: mysql-container
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: name
+      MYSQL_USER: name
+      MYSQL_PASS: name
+      MYSQL_ROOT_PASSWORD: name
+    ports:
+      - 3306:3306
+    volumes:
+      - db:/var/lib/mysql
+
+  frontend:
+    build: ./frontend # Path to your second React frontend Dockerfile
+    ports:
+      - "3001:80"
+    depends_on:
+      - backend
+
+    
+volumes:
+  db:
